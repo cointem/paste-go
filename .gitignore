@@ -1,0 +1,40 @@
+# IDEs and Editors
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# Go Core
+core/vendor/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# VS Code Extension
+extension/node_modules/
+extension/dist/
+extension/out/
+extension/bin/
+.vscode-test/
+*.vsix
+npm-debug.log
+yarn-error.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log

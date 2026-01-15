@@ -1,0 +1,81 @@
+{
+  "name": "paste-forge",
+  "displayName": "Paste Forge",
+  "description": "Smart Paste for VS Code with AI Fallback",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "paste-forge.smartPaste",
+        "title": "Smart Paste (Struct)",
+        "category": "Paste Forge"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "paste-forge.smartPaste",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Paste Forge",
+      "properties": {
+        "pasteForge.corePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Paste Forge Go binary. If empty, tries to find in extension folder."
+        },
+        "pasteForge.aiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for AI Fallback."
+        },
+        "pasteForge.aiProvider": {
+          "type": "string",
+          "default": "gemini",
+          "enum": [
+            "gemini",
+            "openai"
+          ],
+          "description": "AI Provider to use for fallback."
+        },
+        "pasteForge.aiModel": {
+          "type": "string",
+          "default": "",
+          "description": "Specific model name (e.g., 'gpt-4o', 'gemini-1.5-pro'). Leave empty for default."
+        },
+        "pasteForge.aiBaseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Base URL for OpenAI-compatible providers (e.g. DeepSeek)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "package": "vsce package",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "ts-loader": "^9.4.0",
+    "webpack": "^5.0.0",
+    "webpack-cli": "^5.0.0",
+    "vsce": "^2.15.0"
+  }
+}
