@@ -1,9 +1,10 @@
 package java_gen
 
 import (
-	"paste-go/pkg/schema"
 	"strings"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestJavaGenerator_Generate(t *testing.T) {

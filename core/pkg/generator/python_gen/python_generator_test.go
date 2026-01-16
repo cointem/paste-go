@@ -1,9 +1,10 @@
 package python_gen
 
 import (
-	"paste-go/pkg/schema"
 	"strings"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestPythonGenerator_Generate(t *testing.T) {

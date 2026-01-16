@@ -1,8 +1,9 @@
 package sql
 
 import (
-	"paste-go/pkg/schema"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestSQLParser_CanParse(t *testing.T) {

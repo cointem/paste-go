@@ -1,8 +1,9 @@
 package json
 
 import (
-	"paste-go/pkg/schema"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestJSONParser_CanParse(t *testing.T) {

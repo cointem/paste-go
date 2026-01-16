@@ -3,20 +3,17 @@ package gemini
 import (
 	"context"
 	"fmt"
-	"paste-go/pkg/ai"
 	"strings"
+
+	"paste-go/pkg/ai"
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
 )
 
-
 // init registers the Gemini provider with the central factory.
 func init() {
 	ai.Register("gemini", func() ai.Provider {
-		return NewGeminiProvider()
-	})
-	ai.Register("google", func() ai.Provider {
 		return NewGeminiProvider()
 	})
 }

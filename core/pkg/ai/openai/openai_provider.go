@@ -3,8 +3,9 @@ package openai
 import (
 	"context"
 	"fmt"
-	"paste-go/pkg/ai"
 	"strings"
+
+	"paste-go/pkg/ai"
 
 	gopenai "github.com/sashabaranov/go-openai"
 )
@@ -12,13 +13,6 @@ import (
 // init registers the OpenAI provider with the central factory.
 func init() {
 	ai.Register("openai", func() ai.Provider {
-		return NewOpenAIProvider()
-	})
-	// Register an alias for users who might think of compatible models as distinct
-	ai.Register("deepseek", func() ai.Provider {
-		return NewOpenAIProvider()
-	})
-	ai.Register("moonshot", func() ai.Provider {
 		return NewOpenAIProvider()
 	})
 }

@@ -1,9 +1,10 @@
 package rust_gen
 
 import (
-	"paste-go/pkg/schema"
 	"strings"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestRustGenerator_Generate(t *testing.T) {

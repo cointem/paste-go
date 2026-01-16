@@ -1,8 +1,9 @@
 package xml
 
 import (
-	"paste-go/pkg/schema"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestXMLParser_CanParse(t *testing.T) {

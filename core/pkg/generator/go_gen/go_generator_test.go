@@ -1,9 +1,10 @@
 package go_gen
 
 import (
-	"paste-go/pkg/schema"
 	"strings"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestGoGenerator_Generate(t *testing.T) {

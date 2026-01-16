@@ -1,9 +1,10 @@
 package ts_gen
 
 import (
-	"paste-go/pkg/schema"
 	"strings"
 	"testing"
+
+	"paste-go/pkg/schema"
 )
 
 func TestTSGenerator_Generate(t *testing.T) {
