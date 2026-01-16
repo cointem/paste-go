@@ -2,9 +2,10 @@ package rust_gen
 
 import (
 	"fmt"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/generator"
+	"paste-go/pkg/schema"
 )
 
 type RustGenerator struct{}
@@ -44,7 +45,7 @@ func (g *RustGenerator) Generate(s *schema.Struct) (string, error) {
 		case schema.KindObject:
 			rustType = "serde_json::Value"
 		}
-		
+
 		// snake_case
 		name := strings.ToLower(f.OriginalName)
 		sb.WriteString(fmt.Sprintf("\tpub %s: %s,\n", name, rustType))

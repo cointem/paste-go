@@ -6,20 +6,19 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
-	"paste-forge/pkg/ai"
-	"paste-forge/pkg/ai/gemini"
-	"paste-forge/pkg/ai/openai"
-	gitkraken "paste-forge/pkg/generator/go_gen"
-	javaGen "paste-forge/pkg/generator/java_gen"
-	pyGen "paste-forge/pkg/generator/python_gen"
-	rustGen "paste-forge/pkg/generator/rust_gen"
-	tsGen "paste-forge/pkg/generator/ts_gen"
-	jsonParser "paste-forge/pkg/parser/json"
-	sqlParser "paste-forge/pkg/parser/sql"
-	xmlParser "paste-forge/pkg/parser/xml"
-	"paste-forge/pkg/processor"
+	"paste-go/pkg/ai"
+	_ "paste-go/pkg/ai/gemini"
+	_ "paste-go/pkg/ai/openai"
+	gitkraken "paste-go/pkg/generator/go_gen"
+	javaGen "paste-go/pkg/generator/java_gen"
+	pyGen "paste-go/pkg/generator/python_gen"
+	rustGen "paste-go/pkg/generator/rust_gen"
+	tsGen "paste-go/pkg/generator/ts_gen"
+	jsonParser "paste-go/pkg/parser/json"
+	sqlParser "paste-go/pkg/parser/sql"
+	xmlParser "paste-go/pkg/parser/xml"
+	"paste-go/pkg/processor"
 )
 
 func main() {
@@ -48,17 +47,19 @@ func main() {
 	// 4. Configure AI (if key provided)
 	if *apiKey != "" {
 		var provider ai.Provider
-		
-		switch strings.ToLower(*aiProviderType) {
-		case "openai":
-			provider = openai.NewOpenAIProvider()
-		case "gemini":
-			// Default to gemini
-			provider = gemini.NewGeminiProvider()
-		default:
-			// Default to gemini if unknown, or handle error
-			fmt.Fprintf(os.Stderr, "Unknown AI provider: %s, defaulting to Gemini\n", *aiProviderType)
-			provider = gemini.NewGeminiProvider()
+		var err error
+
+		// Use the factory to get the provider
+		provider, err = ai.GetProvider(*aiProviderType)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: %v. Defaulting to Gemini.\n", err)
+			provider, _ = ai.GetProvider("gemini")
+		}
+
+		if provider == nil {
+			// If even gemini fails (should not happen if registered correctly)
+			fmt.Fprintf(os.Stderr, "Error: Could not initialize any AI provider.\n")
+			os.Exit(1)
 		}
 
 		config := map[string]string{
@@ -68,7 +69,7 @@ func main() {
 			config["base_url"] = *aiBaseURL
 		}
 
-		err := provider.Configure(config)
+		err = provider.Configure(config)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to configure AI: %v\n", err)
 		} else {

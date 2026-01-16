@@ -2,9 +2,10 @@ package python_gen
 
 import (
 	"fmt"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/generator"
+	"paste-go/pkg/schema"
 )
 
 type PythonGenerator struct{}
@@ -26,9 +27,9 @@ func (g *PythonGenerator) Generate(s *schema.Struct) (string, error) {
 	sb := strings.Builder{}
 	sb.WriteString("from pydantic import BaseModel\n")
 	sb.WriteString("from typing import Any, List, Optional\n\n")
-	
+
 	sb.WriteString(fmt.Sprintf("class %s(BaseModel):\n", s.Name))
-	
+
 	if len(s.Fields) == 0 {
 		sb.WriteString("    pass\n")
 		return sb.String(), nil
@@ -52,7 +53,7 @@ func (g *PythonGenerator) Generate(s *schema.Struct) (string, error) {
 		case schema.KindObject:
 			pyType = "dict"
 		}
-		
+
 		// Python snake_case convention
 		pyName := toSnakeCase(f.OriginalName)
 		sb.WriteString(fmt.Sprintf("    %s: %s\n", pyName, pyType))

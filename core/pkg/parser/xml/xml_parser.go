@@ -2,9 +2,10 @@ package xml
 
 import (
 	"encoding/xml"
-	"paste-forge/pkg/parser"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/parser"
+	"paste-go/pkg/schema"
 )
 
 type XMLParser struct{}
@@ -31,18 +32,12 @@ func (p *XMLParser) Parse(content string) (*schema.Struct, error) {
 		Fields: []schema.Field{},
 	}
 
-	// Simple flat parse for demo. 
-	// In reality, XML structure inference is complex (attributes vs elements, arrays).
-	// We will attempt to decode into a generic map structure.
-	// Since Go's encoding/xml doesn't support unmarshal into map[string]interface{} natively well,
-	// we'll do a basic token traversal to find top-level elements of the root.
-
 	// A better approach for XML to Schema inference usually involves reading the whole tree.
 	// For this prototype, we'll try to guess based on immediate children of root.
 
 	var inRoot bool
 	rootName := ""
-	
+
 	for {
 		t, _ := decoder.Token()
 		if t == nil {
@@ -56,14 +51,14 @@ func (p *XMLParser) Parse(content string) (*schema.Struct, error) {
 				result.Name = toPascalCase(rootName)
 				continue
 			}
-			
+
 			// This is a child of root
 			fieldName := se.Name.Local
-			
+
 			// Read content
 			val, _ := decoder.Token()
 			var kind schema.Kind = schema.KindString
-			
+
 			if v, ok := val.(xml.CharData); ok {
 				sVal := string(v)
 				// Heuristic type guessing
@@ -82,7 +77,7 @@ func (p *XMLParser) Parse(content string) (*schema.Struct, error) {
 			})
 
 			// Skip to end of this element
-			decoder.Skip() 
+			decoder.Skip()
 		}
 	}
 
@@ -101,7 +96,7 @@ func toPascalCase(s string) string {
 
 func isInt(s string) bool {
 	// simplified check
-	return false 
+	return false
 }
 
 func isBool(s string) bool {

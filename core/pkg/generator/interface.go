@@ -1,6 +1,6 @@
 package generator
 
-import "paste-forge/pkg/schema"
+import "paste-go/pkg/schema"
 
 type Generator interface {
 	Name() string

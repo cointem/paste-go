@@ -2,9 +2,10 @@ package ts_gen
 
 import (
 	"fmt"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/generator"
+	"paste-go/pkg/schema"
 )
 
 type TSGenerator struct{}

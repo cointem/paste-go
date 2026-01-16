@@ -2,9 +2,10 @@ package json
 
 import (
 	"encoding/json"
-	"paste-forge/pkg/parser"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/parser"
+	"paste-go/pkg/schema"
 )
 
 type JSONParser struct{}

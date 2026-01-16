@@ -2,10 +2,11 @@ package sql
 
 import (
 	"fmt"
-	"paste-forge/pkg/parser"
-	"paste-forge/pkg/schema"
 	"regexp"
 	"strings"
+
+	"paste-go/pkg/parser"
+	"paste-go/pkg/schema"
 )
 
 type SQLParser struct{}
@@ -43,7 +44,7 @@ func (p *SQLParser) Parse(content string) (*schema.Struct, error) {
 	if startIdx == -1 || endIdx == -1 {
 		return nil, fmt.Errorf("invalid sql syntax")
 	}
-	
+
 	columnSection := content[startIdx+1 : endIdx]
 	lines := strings.Split(columnSection, ",")
 

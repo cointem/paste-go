@@ -2,9 +2,10 @@ package go_gen
 
 import (
 	"fmt"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/generator"
+	"paste-go/pkg/schema"
 )
 
 type GoGenerator struct{}

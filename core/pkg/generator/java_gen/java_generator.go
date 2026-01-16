@@ -2,9 +2,10 @@ package java_gen
 
 import (
 	"fmt"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/schema"
 	"strings"
+
+	"paste-go/pkg/generator"
+	"paste-go/pkg/schema"
 )
 
 type JavaGenerator struct{}
@@ -40,11 +41,11 @@ func (g *JavaGenerator) Generate(s *schema.Struct) (string, error) {
 		case schema.KindBool:
 			javaType = "Boolean"
 		case schema.KindTime:
-			javaType = "String" 
+			javaType = "String"
 		case schema.KindArray:
 			javaType = "java.util.List<Object>"
 		}
-		
+
 		// camelCase
 		name := toCamelCase(f.OriginalName)
 		sb.WriteString(fmt.Sprintf("\tprivate %s %s;\n", javaType, name))

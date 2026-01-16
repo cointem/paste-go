@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"paste-forge/pkg/ai"
-	"paste-forge/pkg/generator"
-	"paste-forge/pkg/parser"
+
+	"paste-go/pkg/ai"
+	"paste-go/pkg/generator"
+	"paste-go/pkg/parser"
 )
 
 // ForgeProcessor orchestrates the conversion process.
@@ -80,7 +81,7 @@ func (p *ForgeProcessor) Process(ctx context.Context, content string, targetLang
 		if modelName == "" {
 			modelName = "default-model"
 		}
-		
+
 		return p.aiProvider.GenerateCode(ctx, prompt, modelName)
 	}
 

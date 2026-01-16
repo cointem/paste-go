@@ -1,6 +1,6 @@
 package parser
 
-import "paste-forge/pkg/schema"
+import "paste-go/pkg/schema"
 
 type Parser interface {
 	Name() string

@@ -3,10 +3,25 @@ package openai
 import (
 	"context"
 	"fmt"
+	"paste-go/pkg/ai"
 	"strings"
 
 	gopenai "github.com/sashabaranov/go-openai"
 )
+
+// init registers the OpenAI provider with the central factory.
+func init() {
+	ai.Register("openai", func() ai.Provider {
+		return NewOpenAIProvider()
+	})
+	// Register an alias for users who might think of compatible models as distinct
+	ai.Register("deepseek", func() ai.Provider {
+		return NewOpenAIProvider()
+	})
+	ai.Register("moonshot", func() ai.Provider {
+		return NewOpenAIProvider()
+	})
+}
 
 type OpenAIProvider struct {
 	client *gopenai.Client
@@ -30,7 +45,7 @@ func (p *OpenAIProvider) Configure(config map[string]string) error {
 	if baseURL, ok := config["base_url"]; ok && baseURL != "" {
 		conf.BaseURL = baseURL
 	}
-	
+
 	p.client = gopenai.NewClientWithConfig(conf)
 	return nil
 }
@@ -60,7 +75,6 @@ func (p *OpenAIProvider) GenerateCode(ctx context.Context, prompt string, modelN
 			},
 		},
 	)
-
 	if err != nil {
 		return "", err
 	}
@@ -68,7 +82,7 @@ func (p *OpenAIProvider) GenerateCode(ctx context.Context, prompt string, modelN
 	if len(resp.Choices) == 0 {
 		return "", fmt.Errorf("no choices returned from openai")
 	}
-	
+
 	result := resp.Choices[0].Message.Content
 	return cleanCodeBlock(result), nil
 }

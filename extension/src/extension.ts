@@ -3,10 +3,10 @@ import * as cp from 'child_process';
 import * as path from 'path';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Paste Forge is now active!');
-    const outputChannel = vscode.window.createOutputChannel("Paste Forge");
+    console.log('Paste Go is now active!');
+    const outputChannel = vscode.window.createOutputChannel("Paste Go");
 
-    let disposable = vscode.commands.registerCommand('paste-forge.smartPaste', async () => {
+    let disposable = vscode.commands.registerCommand('paste-go.smartPaste', async () => {
         outputChannel.clear();
         outputChannel.appendLine("Smart Paste triggered");
 
@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // 2. Resolve Binary Path
-        const config = vscode.workspace.getConfiguration('pasteForge');
+        const config = vscode.workspace.getConfiguration('pasteGo');
         let binPath = config.get<string>('corePath');
         const aiKey = config.get<string>('aiApiKey');
         const aiProvider = config.get<string>('aiProvider') || "gemini";
@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
             // In dev mode, we might want to run 'go run' if bin not found, but let's assume a build
             const extPath = context.extensionPath;
             // Adjust this check based on OS
-             binPath = path.join(extPath, 'bin', process.platform === 'win32' ? 'paste-forge.exe' : 'paste-forge');
+             binPath = path.join(extPath, 'bin', process.platform === 'win32' ? 'paste-go.exe' : 'paste-go');
         }
 
         // 3. Prepare Arguments
@@ -65,11 +65,11 @@ export function activate(context: vscode.ExtensionContext) {
         // CHECK IF DEV MODE: If we are in the dev workspace, we can use `go run`
         outputChannel.appendLine(`Core Path: ${binPath}`);
         
-        if (binPath.includes('paste-forge') && !require('fs').existsSync(binPath)) {
+        if (binPath.includes('paste-go') && !require('fs').existsSync(binPath)) {
              // Fallback to go run for development convenience
              outputChannel.appendLine("Binary not found, falling back to 'go run'...");
              const coreDir = path.join(context.extensionPath, '..', 'core');
-             proc = cp.spawn('go', ['run', './cmd/paste-forge/main.go', ...args], {
+             proc = cp.spawn('go', ['run', './cmd/paste-go/main.go', ...args], {
                  cwd: coreDir,
                  env: process.env // Inherit env for GOPATH etc
              });

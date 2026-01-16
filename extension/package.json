@@ -1,6 +1,6 @@
 {
-  "name": "paste-forge",
-  "displayName": "Paste Forge",
+  "name": "paste-go",
+  "displayName": "Paste Go",
   "description": "Smart Paste for VS Code with AI Fallback",
   "version": "0.0.1",
   "engines": {
@@ -14,47 +14,49 @@
   "contributes": {
     "commands": [
       {
-        "command": "paste-forge.smartPaste",
+        "command": "paste-go.smartPaste",
         "title": "Smart Paste (Struct)",
-        "category": "Paste Forge"
+        "category": "Paste Go"
       }
     ],
     "keybindings": [
       {
-        "command": "paste-forge.smartPaste",
+        "command": "paste-go.smartPaste",
         "key": "ctrl+alt+v",
         "mac": "cmd+alt+v",
         "when": "editorTextFocus"
       }
     ],
     "configuration": {
-      "title": "Paste Forge",
+      "title": "Paste Go",
       "properties": {
-        "pasteForge.corePath": {
+        "pasteGo.corePath": {
           "type": "string",
           "default": "",
-          "description": "Path to the Paste Forge Go binary. If empty, tries to find in extension folder."
+          "description": "Path to the Paste Go Go binary. If empty, tries to find in extension folder."
         },
-        "pasteForge.aiApiKey": {
+        "pasteGo.aiApiKey": {
           "type": "string",
           "default": "",
           "description": "API Key for AI Fallback."
         },
-        "pasteForge.aiProvider": {
+        "pasteGo.aiProvider": {
           "type": "string",
           "default": "gemini",
+          "description": "AI Provider to use for fallback (e.g., gemini, openai, deepseek, moonshot).",
           "enum": [
             "gemini",
-            "openai"
-          ],
-          "description": "AI Provider to use for fallback."
+            "openai",
+            "deepseek",
+            "moonshot"
+          ]
         },
-        "pasteForge.aiModel": {
+        "pasteGo.aiModel": {
           "type": "string",
           "default": "",
           "description": "Specific model name (e.g., 'gpt-4o', 'gemini-1.5-pro'). Leave empty for default."
         },
-        "pasteForge.aiBaseUrl": {
+        "pasteGo.aiBaseUrl": {
           "type": "string",
           "default": "",
           "description": "Base URL for OpenAI-compatible providers (e.g. DeepSeek)."
