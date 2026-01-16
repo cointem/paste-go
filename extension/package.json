@@ -1,14 +1,22 @@
 {
   "name": "paste-go",
   "displayName": "Paste Go",
+  "publisher": "cointem",
   "description": "Smart Paste for VS Code with AI Fallback",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cointem/paste-go"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": ["paste", "go", "smart paste", "ai", "code generation"],
+  "icon": "icon.png",
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -65,7 +73,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -b",
     "watch": "tsc -b -w",
     "package": "vsce package",
@@ -78,6 +86,9 @@
     "ts-loader": "^9.4.0",
     "webpack": "^5.0.0",
     "webpack-cli": "^5.0.0",
-    "vsce": "^2.15.0"
+    "@vscode/vsce": "2.22.0"
+  },
+  "overrides": {
+    "undici": "^5.28.0"
   }
 }
