@@ -15,6 +15,14 @@ import (
 	pyGen "paste-go/pkg/generator/python_gen"
 	rustGen "paste-go/pkg/generator/rust_gen"
 	tsGen "paste-go/pkg/generator/ts_gen"
+	cppGen "paste-go/pkg/generator/cpp_gen"
+	csGen "paste-go/pkg/generator/csharp_gen"
+	dartGen "paste-go/pkg/generator/dart_gen"
+	kotlinGen "paste-go/pkg/generator/kotlin_gen"
+	phpGen "paste-go/pkg/generator/php_gen"
+	rubyGen "paste-go/pkg/generator/ruby_gen"
+	scalaGen "paste-go/pkg/generator/scala_gen"
+	swiftGen "paste-go/pkg/generator/swift_gen"
 	jsonParser "paste-go/pkg/parser/json"
 	sqlParser "paste-go/pkg/parser/sql"
 	xmlParser "paste-go/pkg/parser/xml"
@@ -43,6 +51,14 @@ func main() {
 	proc.RegisterGenerator(pyGen.NewPythonGenerator())
 	proc.RegisterGenerator(javaGen.NewJavaGenerator())
 	proc.RegisterGenerator(rustGen.NewRustGenerator())
+	proc.RegisterGenerator(csGen.NewCSharpGenerator())
+	proc.RegisterGenerator(kotlinGen.NewKotlinGenerator())
+	proc.RegisterGenerator(swiftGen.NewSwiftGenerator())
+	proc.RegisterGenerator(phpGen.NewPHPGenerator())
+	proc.RegisterGenerator(rubyGen.NewRubyGenerator())
+	proc.RegisterGenerator(dartGen.NewDartGenerator())
+	proc.RegisterGenerator(cppGen.NewCppGenerator())
+	proc.RegisterGenerator(scalaGen.NewScalaGenerator())
 
 	// 4. Configure AI (if key provided)
 	if *apiKey != "" {

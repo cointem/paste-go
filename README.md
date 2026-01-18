@@ -1,10 +1,10 @@
-# Paste Go 📋
+# Paste Go ![alt text](icon.png)
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/cointem.paste-go) ![Installs](https://img.shields.io/visual-studio-marketplace/i/cointem.paste-go) ![License](https://img.shields.io/github/license/cointem/paste-go)
 
-**Paste Go** is a smart clipboard assistant for VS Code. It automatically detects the content in your clipboard (JSON, XML, SQL) and converts it into the corresponding data structure code for your current file's language.
+**Paste Go** is a smart clipboard assistant for VS Code. It automatically detects the content in your clipboard (JSON, XML, SQL, structures or class definitions, and even natural language) and converts it into the corresponding data structure code for your current file's language.
 
-**Paste Go** 是一个 VS Code 智能粘贴助手。它能自动检测剪贴板内容（JSON, XML, SQL），并将其转换为当前文件语言对应的结构体或类定义代码。
+**Paste Go** 是一个 VS Code 智能粘贴助手。它能自动检测剪贴板内容（JSON, XML, SQL, 结构体或者类定义，甚至是自然语言），并将其转换为当前文件语言对应的结构体或类定义代码。
 
 ---
 
@@ -17,25 +17,31 @@
 - 🧠 **AI Fallback / AI 智能兜底**:
   - When local parsing fails or logic is complex, it automatically calls AI to generate the code.
   - 当本地解析失败或逻辑复杂时，自动调用 AI 生成代码。
-  - Supports **DeepSeek**, **OpenAI**, **Gemini**, **Moonshot (Kimi)** and more.
-  - 支持 DeepSeek, OpenAI, Gemini, Moonshot (Kimi) 等多种模型。
+   - Supports **DeepSeek**, **OpenAI**, **Gemini**, **Moonshot (Kimi)**, **GLM** and other OpenAI-compatible services.
+   - 支持 DeepSeek、OpenAI、Gemini、Moonshot (Kimi)、GLM 等多种模型与 OpenAI 兼容服务。
 
-- 🔌 **Unified Architecture / 统一架构**:
-  - **Inputs / 输入**: JSON, XML, SQL (CREATE TABLE).
-  - **Outputs / 输出**: Go (Struct), TypeScript (Interface), Python (Pydantic), Java (Lombok), Rust (Serde).
+- 🔌 **Multi-language Output / 多语言输出**:
+   - **Outputs / 输出**: Go, TypeScript, Python, Java, Rust, C#, Kotlin, Swift, PHP, Ruby, Dart, C/C++, Scala.
+   - 支持主流语言结构体/类定义代码生成。
+
+- 📥 **Broad Input Formats / 多种输入格式**:
+   - **Inputs / 输入**: JSON, XML, SQL (CREATE TABLE), Go Struct, Python Pydantic, Natural Language.
+   - 支持结构化数据与自然语言描述。
 
 ---
 
 ## 🚀 Usage / 使用方法
 
-1. **Copy** some JSON/SQL/XML text to your clipboard.
-   这里复制一段 JSON/SQL/XML 文本。
+1. **Copy** some JSON/SQL/XML/code/natural language to your clipboard.
+   这里复制一段 JSON/SQL/XML/代码/自然语言。
 2. Open a file (e.g., `user.go` or `types.ts`).
    打开一个代码文件（如 `user.go`）。
-3. Press `Ctrl + Alt + V` (Mac: `Cmd + Alt + V`) or run command `Paste Go: Smart Paste (Struct)`.
-   按下快捷键 `Ctrl + Alt + V` 或执行命令 `Paste Go: Smart Paste`。
+3. Press `Ctrl + Alt + V` (Mac: `Cmd + Alt + V`).
+   按下快捷键 `Ctrl + Alt + V`。
 4. 🎉 The code struct is automatically inserted!
    代码结构体即刻生成！
+
+![Demo](demo.gif)
 
 ---
 
@@ -45,38 +51,51 @@ To enable AI superpowers using your own API Key (e.g. DeepSeek):
 如需启用 AI 增强功能（例如使用 DeepSeek），请在设置中配置：
 
 ### Method 1: GUI Settings (推荐)
+
 1. Open Settings (`Ctrl + ,`) -> Search `Paste Go`.
    打开设置 -> 搜索 `Paste Go`。
-2. **AI Provider**: Select `deepseek` (or `openai`, `gemini`).
-   选择对应的服务商。
+2. **API Format**: Select  `gemini` or `openai`.
+   选择对应的api格式，gemini或者openai(包括deepseek, glm等)。
 3. **API Key**: Enter your key (e.g., `sk-xxxx`).
    填入你的 API Key。
-4. **Base URL**: (Crucial for DeepSeek/Moonshot) Enter the API endpoint.
-   DeepSeek/Kimi 等模型必填，例如 `https://api.deepseek.com`。
+4. **Base URL**: (Crucial for models using OpenAI Format API) Enter the API endpoint.
+   openai 接口规范的模型必填，例如 `https://api.deepseek.com`。
 
 ### Method 2: `settings.json`
 
-```json
-{
-    // DeepSeek Example
-    "pasteGo.aiProvider": "deepseek",
-    "pasteGo.aiApiKey": "sk-your-deepseek-key",
-    "pasteGo.aiBaseUrl": "https://api.deepseek.com",
-    "pasteGo.aiModel": "deepseek-chat",
+1. Open `settings.json` in VS Code:
+   Open Command Palette: `Ctrl + Shift + P` -> type `Open User Settings (JSON)`.
+   打开设置文件：`Ctrl + Shift + P` -> 输入 `Open User Settings (JSON)`。
+2. Add the config under the root object (not inside other blocks).
+   Add the following under the top-level `{}`.
+   在根对象中添加以下配置（不要放到其他块里）。
+3. Choose provider format:
+   - `openai` for OpenAI-compatible APIs (DeepSeek/GLM/Moonshot/Proxy).
+   - `gemini` for Google Gemini API.
+   - `openai` 适用于 OpenAI 格式接口（DeepSeek/GLM/Moonshot/自建代理）。
+   - `gemini` 适用于 Google Gemini 格式接口。
 
-    // Google Gemini Example
+```jsonc
+{
+    // ====== OpenAI API compatible (DeepSeek / GLM / Moonshot / Proxy) ======
+    "pasteGo.aiProvider": "openai",
+    "pasteGo.aiApiKey": "sk-your-api-key",
+    "pasteGo.aiBaseUrl": "https://api.deepseek.com", // 必填：OpenAI 兼容模型的 BaseURL
+    "pasteGo.aiModel": "deepseek-chat",              // 可选：模型名称
+
+    // ====== Google Gemini ======
     // "pasteGo.aiProvider": "gemini",
-    // "pasteGo.aiApiKey": "your-gemini-key", // No BaseURL needed usually
+    // "pasteGo.aiApiKey": "your-gemini-key",
     // "pasteGo.aiModel": "gemini-1.5-flash"
 }
 ```
 
----
+### Tips / 提示
 
-## 🛠️ Requirements / 依赖
-
-- **None!** The extension comes with a bundled lightweight Go binary (~6MB). You don't need to install Go or Node.js.
-- **无依赖！** 插件自带精简版 Go 二进制核心 (~6MB)，无需安装 Go 或 Node.js 环境即可使用。
+- `pasteGo.aiBaseUrl` is required only for OpenAI-compatible providers (e.g. DeepSeek).
+- `pasteGo.aiModel` uses a default if left empty.
+- `pasteGo.aiBaseUrl` 仅在 `openai` 兼容接口时需要（如 DeepSeek）。
+- `pasteGo.aiModel` 为空时会使用默认模型。
 
 ---
 

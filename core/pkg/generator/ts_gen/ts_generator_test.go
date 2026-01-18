@@ -13,7 +13,13 @@ func TestTSGenerator_Generate(t *testing.T) {
 		Name: "TestInterface",
 		Fields: []schema.Field{
 			{Name: "Name", OriginalName: "name", Kind: schema.KindString},
-			{Name: "Count", OriginalName: "count", Kind: schema.KindInt},
+			{Name: "Age", OriginalName: "age", Kind: schema.KindInt},
+			{Name: "Score", OriginalName: "score", Kind: schema.KindFloat},
+			{Name: "Active", OriginalName: "active", Kind: schema.KindBool},
+			{Name: "Tags", OriginalName: "tags", Kind: schema.KindArray},
+			{Name: "Meta", OriginalName: "meta", Kind: schema.KindObject},
+			{Name: "CreatedAt", OriginalName: "created_at", Kind: schema.KindTime},
+			{Name: "AnyValue", OriginalName: "any_value", Kind: schema.KindAny},
 		},
 	}
 
@@ -28,7 +34,25 @@ func TestTSGenerator_Generate(t *testing.T) {
 	if !strings.Contains(code, "name: string;") {
 		t.Error("Missing name field")
 	}
-	if !strings.Contains(code, "count: number;") {
-		t.Error("Missing count field")
+	if !strings.Contains(code, "age: number;") {
+		t.Error("Missing age field")
+	}
+	if !strings.Contains(code, "score: number;") {
+		t.Error("Missing score field")
+	}
+	if !strings.Contains(code, "active: boolean;") {
+		t.Error("Missing active field")
+	}
+	if !strings.Contains(code, "tags: any[];") {
+		t.Error("Missing tags field")
+	}
+	if !strings.Contains(code, "meta: object;") {
+		t.Error("Missing meta field")
+	}
+	if !strings.Contains(code, "created_at: Date;") {
+		t.Error("Missing created_at field")
+	}
+	if !strings.Contains(code, "any_value: any;") {
+		t.Error("Missing any_value field")
 	}
 }

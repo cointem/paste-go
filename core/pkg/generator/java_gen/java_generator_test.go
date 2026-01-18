@@ -12,7 +12,14 @@ func TestJavaGenerator_Generate(t *testing.T) {
 	s := &schema.Struct{
 		Name: "TestClass",
 		Fields: []schema.Field{
-			{Name: "UserName", OriginalName: "user_name", Kind: schema.KindString},
+			{Name: "Name", OriginalName: "name", Kind: schema.KindString},
+			{Name: "Age", OriginalName: "age", Kind: schema.KindInt},
+			{Name: "Score", OriginalName: "score", Kind: schema.KindFloat},
+			{Name: "Active", OriginalName: "active", Kind: schema.KindBool},
+			{Name: "Tags", OriginalName: "tags", Kind: schema.KindArray},
+			{Name: "Meta", OriginalName: "meta", Kind: schema.KindObject},
+			{Name: "CreatedAt", OriginalName: "created_at", Kind: schema.KindTime},
+			{Name: "AnyValue", OriginalName: "any_value", Kind: schema.KindAny},
 		},
 	}
 
@@ -27,9 +34,28 @@ func TestJavaGenerator_Generate(t *testing.T) {
 	if !strings.Contains(code, "@Data") {
 		t.Error("Missing Lombok annotation")
 	}
-	// The basic implementation returns raw OriginalName or simple camelCase logic
-	// In the real impl, we expect `private String user_name;` based on current logic
-	if !strings.Contains(code, "private String user_name;") {
-		t.Error("Missing field")
+	if !strings.Contains(code, "private String name;") {
+		t.Error("Missing name field")
+	}
+	if !strings.Contains(code, "private Integer age;") {
+		t.Error("Missing age field")
+	}
+	if !strings.Contains(code, "private Double score;") {
+		t.Error("Missing score field")
+	}
+	if !strings.Contains(code, "private Boolean active;") {
+		t.Error("Missing active field")
+	}
+	if !strings.Contains(code, "private java.util.List<Object> tags;") {
+		t.Error("Missing tags field")
+	}
+	if !strings.Contains(code, "private Object meta;") {
+		t.Error("Missing meta field")
+	}
+	if !strings.Contains(code, "private String created_at;") {
+		t.Error("Missing created_at field")
+	}
+	if !strings.Contains(code, "private Object any_value;") {
+		t.Error("Missing any_value field")
 	}
 }

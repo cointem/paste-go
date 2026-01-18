@@ -46,7 +46,7 @@ func TestJSONParser_Parse(t *testing.T) {
 	fields := map[string]schema.Kind{
 		"UserName": schema.KindString,
 		"IsAdmin":  schema.KindBool,
-		"Age":      schema.KindFloat, // encoding/json unmarshals numbers to float64
+		"Age":      schema.KindInt,
 	}
 
 	if len(s.Fields) != len(fields) {
@@ -63,4 +63,49 @@ func TestJSONParser_Parse(t *testing.T) {
 			t.Errorf("Field %s kind = %v, want %v", f.Name, f.Kind, wantKind)
 		}
 	}
+}
+
+func TestJSONParser_ParseNested(t *testing.T) {
+	p := NewJSONParser()
+	content := `{
+  "user": {"id": 1, "profile": {"email": "a@b.com"}},
+  "items": [{"sku": "s1", "qty": 2}],
+  "tags": ["a", "b"]
+}`
+
+	s, err := p.Parse(content)
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	user := findField(s, "User")
+	if user == nil || user.Kind != schema.KindObject || user.Nested == nil {
+		t.Fatalf("user field not parsed as nested object")
+	}
+	profile := findField(user.Nested, "Profile")
+	if profile == nil || profile.Kind != schema.KindObject || profile.Nested == nil {
+		t.Fatalf("profile field not parsed as nested object")
+	}
+
+	items := findField(s, "Items")
+	if items == nil || items.Kind != schema.KindArray || items.Nested == nil {
+		t.Fatalf("items field not parsed as array of objects")
+	}
+	if findField(items.Nested, "Sku") == nil {
+		t.Fatalf("items nested struct missing Sku")
+	}
+
+	tags := findField(s, "Tags")
+	if tags == nil || tags.Kind != schema.KindArray {
+		t.Fatalf("tags field not parsed as array")
+	}
+}
+
+func findField(s *schema.Struct, name string) *schema.Field {
+	for i := range s.Fields {
+		if s.Fields[i].Name == name {
+			return &s.Fields[i]
+		}
+	}
+	return nil
 }
