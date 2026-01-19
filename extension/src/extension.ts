@@ -1,6 +1,32 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
+import * as fs from 'fs';
+
+function resolveBundledBinary(extPath: string): string {
+    const platform = process.platform;
+    const arch = process.arch;
+
+    if (platform === 'win32') {
+        return path.join(extPath, 'bin', 'paste-go.exe');
+    }
+
+    if (platform === 'darwin') {
+        if (arch === 'arm64') {
+            return path.join(extPath, 'bin', 'paste-go-darwin-arm64');
+        }
+        return path.join(extPath, 'bin', 'paste-go-darwin-amd64');
+    }
+
+    if (platform === 'linux') {
+        if (arch === 'arm64') {
+            return path.join(extPath, 'bin', 'paste-go-linux-arm64');
+        }
+        return path.join(extPath, 'bin', 'paste-go-linux-amd64');
+    }
+
+    return path.join(extPath, 'bin', 'paste-go');
+}
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Paste Go is now active!');
@@ -32,11 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
         const aiBaseUrl = config.get<string>('aiBaseUrl') || "";
 
         if (!binPath) {
-            // Default to bundling behavior (simplified for dev)
-            // In dev mode, we might want to run 'go run' if bin not found, but let's assume a build
             const extPath = context.extensionPath;
-            // Adjust this check based on OS
-             binPath = path.join(extPath, 'bin', process.platform === 'win32' ? 'paste-go.exe' : 'paste-go');
+            binPath = resolveBundledBinary(extPath);
         }
 
         // 3. Prepare Arguments
@@ -65,7 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
         // CHECK IF DEV MODE: If we are in the dev workspace, we can use `go run`
         outputChannel.appendLine(`Core Path: ${binPath}`);
         
-        if (binPath.includes('paste-go') && !require('fs').existsSync(binPath)) {
+        if (binPath.includes('paste-go') && !fs.existsSync(binPath)) {
              // Fallback to go run for development convenience
              outputChannel.appendLine("Binary not found, falling back to 'go run'...");
              const coreDir = path.join(context.extensionPath, '..', 'core');

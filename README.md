@@ -2,9 +2,9 @@
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/cointem.paste-go) ![Installs](https://img.shields.io/visual-studio-marketplace/i/cointem.paste-go) ![License](https://img.shields.io/github/license/cointem/paste-go)
 
-**Paste Go** is a smart clipboard assistant for VS Code. It automatically detects the content in your clipboard (JSON, XML, SQL, structures or class definitions, and even natural language) and converts it into the corresponding data structure code for your current file's language.
+**Paste Go** is a smart clipboard assistant for VS Code. It automatically detects the content in your clipboard (JSON, SQL, structures or class definitions, and even natural language) and converts it into the corresponding data structure code for your current file's language.
 
-**Paste Go** 是一个 VS Code 智能粘贴助手。它能自动检测剪贴板内容（JSON, XML, SQL, 结构体或者类定义，甚至是自然语言），并将其转换为当前文件语言对应的结构体或类定义代码。
+**Paste Go** 是一个 VS Code 智能粘贴助手。它能自动检测剪贴板内容（JSON, SQL, 结构体或者类定义，甚至是自然语言），并将其转换为当前文件语言对应的结构体或类定义代码。
 
 ---
 
@@ -25,15 +25,15 @@
    - 支持主流语言结构体/类定义代码生成。
 
 - 📥 **Broad Input Formats / 多种输入格式**:
-   - **Inputs / 输入**: JSON, XML, SQL (CREATE TABLE), Go Struct, Python Pydantic, Natural Language.
+   - **Inputs / 输入**: JSON, SQL (CREATE TABLE), Go Struct, Python Pydantic, Natural Language.
    - 支持结构化数据与自然语言描述。
 
 ---
 
 ## 🚀 Usage / 使用方法
 
-1. **Copy** some JSON/SQL/XML/code/natural language to your clipboard.
-   这里复制一段 JSON/SQL/XML/代码/自然语言。
+1. **Copy** some JSON/SQL/code/natural language to your clipboard.
+   这里复制一段 JSON/SQL/代码/自然语言。
 2. Open a file (e.g., `user.go` or `types.ts`).
    打开一个代码文件（如 `user.go`）。
 3. Press `Ctrl + Alt + V` (Mac: `Cmd + Alt + V`).
@@ -96,6 +96,38 @@ To enable AI superpowers using your own API Key (e.g. DeepSeek):
 - `pasteGo.aiModel` uses a default if left empty.
 - `pasteGo.aiBaseUrl` 仅在 `openai` 兼容接口时需要（如 DeepSeek）。
 - `pasteGo.aiModel` 为空时会使用默认模型。
+
+### Cross-platform Binaries / 跨平台二进制
+
+This extension uses a bundled binary under `extension/bin`. For macOS/Linux you need to provide the matching binary name:
+插件使用 `extension/bin` 下的二进制文件。macOS/Linux 需要对应文件名：
+
+- Windows: `paste-go.exe`
+- macOS (Intel): `paste-go-darwin-amd64`
+- macOS (Apple Silicon): `paste-go-darwin-arm64`
+- Linux (x64): `paste-go-linux-amd64`
+- Linux (arm64): `paste-go-linux-arm64`
+
+If you want to build them yourself, you can cross-compile from Windows:
+如需自行构建，可在 Windows 上交叉编译：
+
+```powershell
+set GOOS=darwin
+set GOARCH=amd64
+go build -ldflags="-s -w" -o ../extension/bin/paste-go-darwin-amd64 ./cmd/paste-go
+
+set GOOS=darwin
+set GOARCH=arm64
+go build -ldflags="-s -w" -o ../extension/bin/paste-go-darwin-arm64 ./cmd/paste-go
+
+set GOOS=linux
+set GOARCH=amd64
+go build -ldflags="-s -w" -o ../extension/bin/paste-go-linux-amd64 ./cmd/paste-go
+
+set GOOS=linux
+set GOARCH=arm64
+go build -ldflags="-s -w" -o ../extension/bin/paste-go-linux-arm64 ./cmd/paste-go
+```
 
 ---
 

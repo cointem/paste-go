@@ -3,7 +3,7 @@
     "configurations": [
         
         {
-            "name": "Extension: Run Paste Forge",
+            "name": "Extension: Run Paste Go",
             "type": "extensionHost",
             "request": "launch",
             "args": [

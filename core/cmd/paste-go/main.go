@@ -10,22 +10,21 @@ import (
 	"paste-go/pkg/ai"
 	_ "paste-go/pkg/ai/gemini"
 	_ "paste-go/pkg/ai/openai"
-	gitkraken "paste-go/pkg/generator/go_gen"
-	javaGen "paste-go/pkg/generator/java_gen"
-	pyGen "paste-go/pkg/generator/python_gen"
-	rustGen "paste-go/pkg/generator/rust_gen"
-	tsGen "paste-go/pkg/generator/ts_gen"
 	cppGen "paste-go/pkg/generator/cpp_gen"
 	csGen "paste-go/pkg/generator/csharp_gen"
 	dartGen "paste-go/pkg/generator/dart_gen"
+	gitkraken "paste-go/pkg/generator/go_gen"
+	javaGen "paste-go/pkg/generator/java_gen"
 	kotlinGen "paste-go/pkg/generator/kotlin_gen"
 	phpGen "paste-go/pkg/generator/php_gen"
+	pyGen "paste-go/pkg/generator/python_gen"
 	rubyGen "paste-go/pkg/generator/ruby_gen"
+	rustGen "paste-go/pkg/generator/rust_gen"
 	scalaGen "paste-go/pkg/generator/scala_gen"
 	swiftGen "paste-go/pkg/generator/swift_gen"
+	tsGen "paste-go/pkg/generator/ts_gen"
 	jsonParser "paste-go/pkg/parser/json"
 	sqlParser "paste-go/pkg/parser/sql"
-	xmlParser "paste-go/pkg/parser/xml"
 	"paste-go/pkg/processor"
 )
 
@@ -43,7 +42,6 @@ func main() {
 	// 2. Register Parsers
 	proc.RegisterParser(jsonParser.NewJSONParser())
 	proc.RegisterParser(sqlParser.NewSQLParser())
-	proc.RegisterParser(xmlParser.NewXMLParser())
 
 	// 3. Register Generators
 	proc.RegisterGenerator(gitkraken.NewGoGenerator())

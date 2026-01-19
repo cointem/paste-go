@@ -9,6 +9,7 @@
 
 # Go Core
 core/vendor/
+core/extension/
 *.exe
 *.dll
 *.so
