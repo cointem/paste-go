@@ -1,7 +1,5 @@
 # Paste Go
 
-![Paste Go Icon](./icon.png)
-
 **Paste Go** — Smart paste for VS Code with local parsing and AI fallback.
 
 ---
