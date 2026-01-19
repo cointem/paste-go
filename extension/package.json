@@ -2,8 +2,8 @@
   "name": "paste-go",
   "displayName": "Paste Go",
   "publisher": "cointem",
-  "description": "Smart Paste for VS Code with AI Fallback",
-  "version": "0.0.1",
+  "description": "Copy json/sql/code or else language, Smart Paste for VS Code with AI Fallback",
+  "version": "0.0.2",
   "license": "MIT",
   "repository": {
     "type": "git",
