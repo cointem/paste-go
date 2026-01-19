@@ -1,4 +1,6 @@
-# Paste Go ![alt text](extension/icon.png)
+<!-- markdownlint-disable MD033 -->
+# Paste Go <img src="extension/icon.png" alt="Paste Go Icon" width="40" height="40" />
+<!-- markdownlint-enable MD033 -->
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/cointem.paste-go) ![Installs](https://img.shields.io/visual-studio-marketplace/i/cointem.paste-go) ![License](https://img.shields.io/github/license/cointem/paste-go)
 
