@@ -7,3 +7,6 @@ vsc-extension-quickstart.md
 webpack.config.js
 **/*.map
 **/*.ts
+bin.backup/**
+dist-pack/**
+node_modules/**

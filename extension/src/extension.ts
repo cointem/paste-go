@@ -53,7 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
         const config = vscode.workspace.getConfiguration('pasteGo');
         let binPath = config.get<string>('corePath');
         const aiKey = config.get<string>('aiApiKey');
-        const aiProvider = config.get<string>('aiProvider') || "gemini";
+        const aiApiFormat = config.get<string>('aiApiFormat') || "gemini";
         const aiModel = config.get<string>('aiModel') || "";
         const aiBaseUrl = config.get<string>('aiBaseUrl') || "";
 
@@ -69,8 +69,8 @@ export function activate(context: vscode.ExtensionContext) {
         if (aiKey) {
             args.push('-key', aiKey);
         }
-        if (aiProvider) {
-            args.push('-provider', aiProvider);
+        if (aiApiFormat) {
+            args.push('-format', aiApiFormat);
         }
         if (aiModel) {
             args.push('-model', aiModel);

@@ -2,8 +2,8 @@
   "name": "paste-go",
   "displayName": "Paste Go",
   "publisher": "cointem",
-  "description": "Copy json/sql/code or else language, Smart Paste for VS Code with AI Fallback",
-  "version": "0.0.2",
+  "description": "Smart paste for VS Code: convert JSON/SQL/code or text into typed structures with local parsing + AI fallback.",
+  "version": "0.0.3",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -48,15 +48,13 @@
           "default": "",
           "description": "API Key for AI Fallback."
         },
-        "pasteGo.aiProvider": {
+        "pasteGo.aiApiFormat": {
           "type": "string",
           "default": "gemini",
-          "description": "AI Provider to use for fallback (e.g., gemini, openai, deepseek, moonshot).",
+          "description": "AI API format to use for fallback (e.g., gemini, openai).",
           "enum": [
             "gemini",
-            "openai",
-            "deepseek",
-            "moonshot"
+            "openai"
           ]
         },
         "pasteGo.aiModel": {

@@ -31,7 +31,7 @@ import (
 func main() {
 	targetLang := flag.String("lang", "go", "Target language for conversion")
 	apiKey := flag.String("key", "", "API Key for AI Fallback")
-	aiProviderType := flag.String("provider", "gemini", "AI Provider (gemini, openai)")
+	aiApiFormat := flag.String("format", "gemini", "AI API format (gemini, openai)")
 	aiModel := flag.String("model", "", "Model Name")
 	aiBaseURL := flag.String("baseurl", "", "Custom Base URL for AI")
 	flag.Parse()
@@ -64,7 +64,7 @@ func main() {
 		var err error
 
 		// Use the factory to get the provider
-		provider, err = ai.GetProvider(*aiProviderType)
+		provider, err = ai.GetProvider(*aiApiFormat)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Warning: %v. Defaulting to Gemini.\n", err)
 			provider, _ = ai.GetProvider("gemini")

@@ -19,8 +19,8 @@
 - 🧠 **AI Fallback / AI 智能兜底**:
   - When local parsing fails or logic is complex, it automatically calls AI to generate the code.
   - 当本地解析失败或逻辑复杂时，自动调用 AI 生成代码。
-   - Supports **DeepSeek**, **OpenAI**, **Gemini**, **Moonshot (Kimi)**, **GLM** and other OpenAI-compatible services.
-   - 支持 DeepSeek、OpenAI、Gemini、Moonshot (Kimi)、GLM 等多种模型与 OpenAI 兼容服务。
+   - Supports **OpenAI** and **Gemini**. The `openai` format also works with OpenAI-compatible services (DeepSeek / GLM / Moonshot / Proxy).
+   - 支持 OpenAI 和 Gemini，`openai` 接口格式同样适用于 OpenAI 兼容服务（DeepSeek / GLM / Moonshot / Proxy）。
 
 - 🔌 **Multi-language Output / 多语言输出**:
    - **Outputs / 输出**: Go, TypeScript, Python, Java, Rust, C#, Kotlin, Swift, PHP, Ruby, Dart, C/C++, Scala.
@@ -49,19 +49,19 @@
 
 ## ⚙️ Configuration / 配置 AI
 
-To enable AI superpowers using your own API Key (e.g. DeepSeek):
-如需启用 AI 增强功能（例如使用 DeepSeek），请在设置中配置：
+To enable AI superpowers using your own API Key (OpenAI or Gemini; OpenAI-compatible services can use the `openai` format):
+如需启用 AI 增强功能（OpenAI 或 Gemini；OpenAI 兼容服务使用 `openai` 接口格式），请在设置中配置：
 
 ### Method 1: GUI Settings (推荐)
 
 1. Open Settings (`Ctrl + ,`) -> Search `Paste Go`.
    打开设置 -> 搜索 `Paste Go`。
 2. **API Format**: Select  `gemini` or `openai`.
-   选择对应的api格式，gemini或者openai(包括deepseek, glm等)。
+   选择对应的接口格式：gemini 或 openai。
 3. **API Key**: Enter your key (e.g., `sk-xxxx`).
    填入你的 API Key。
-4. **Base URL**: (Crucial for models using OpenAI Format API) Enter the API endpoint.
-   openai 接口规范的模型必填，例如 `https://api.deepseek.com`。
+4. **Base URL**: (Only for OpenAI format) Enter the API endpoint.
+   openai 接口可选，例如 `https://api.openai.com/v1` 或兼容服务的 Base URL。
 
 ### Method 2: `settings.json`
 
@@ -72,21 +72,21 @@ To enable AI superpowers using your own API Key (e.g. DeepSeek):
    Add the following under the top-level `{}`.
    在根对象中添加以下配置（不要放到其他块里）。
 3. Choose provider format:
-   - `openai` for OpenAI-compatible APIs (DeepSeek/GLM/Moonshot/Proxy).
+   - `openai` for OpenAI API and OpenAI-compatible services.
    - `gemini` for Google Gemini API.
-   - `openai` 适用于 OpenAI 格式接口（DeepSeek/GLM/Moonshot/自建代理）。
-   - `gemini` 适用于 Google Gemini 格式接口。
+   - `openai` 适用于 OpenAI 接口及 OpenAI 兼容服务。
+   - `gemini` 适用于 Google Gemini 接口。
 
 ```jsonc
 {
-    // ====== OpenAI API compatible (DeepSeek / GLM / Moonshot / Proxy) ======
-    "pasteGo.aiProvider": "openai",
-    "pasteGo.aiApiKey": "sk-your-api-key",
-    "pasteGo.aiBaseUrl": "https://api.deepseek.com", // 必填：OpenAI 兼容模型的 BaseURL
-    "pasteGo.aiModel": "deepseek-chat",              // 可选：模型名称
+   // ====== OpenAI API (compatible with OpenAI-style services) ======
+   "pasteGo.aiApiFormat": "openai",
+   "pasteGo.aiApiKey": "sk-your-api-key",
+   "pasteGo.aiBaseUrl": "https://api.deepseek.com/v1", // 可选：OpenAI 或兼容服务 Base URL
+   "pasteGo.aiModel": "deepseek-chat",                 // 可选：模型名称
 
     // ====== Google Gemini ======
-    // "pasteGo.aiProvider": "gemini",
+   // "pasteGo.aiApiFormat": "gemini",
     // "pasteGo.aiApiKey": "your-gemini-key",
     // "pasteGo.aiModel": "gemini-1.5-flash"
 }
@@ -94,9 +94,9 @@ To enable AI superpowers using your own API Key (e.g. DeepSeek):
 
 ### Tips / 提示
 
-- `pasteGo.aiBaseUrl` is required only for OpenAI-compatible providers (e.g. DeepSeek).
+- `pasteGo.aiBaseUrl` is optional for OpenAI API and OpenAI-compatible services.
 - `pasteGo.aiModel` uses a default if left empty.
-- `pasteGo.aiBaseUrl` 仅在 `openai` 兼容接口时需要（如 DeepSeek）。
+- `pasteGo.aiBaseUrl` 仅在 `openai` 接口/兼容服务时可选使用。
 - `pasteGo.aiModel` 为空时会使用默认模型。
 
 
