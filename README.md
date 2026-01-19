@@ -1,4 +1,4 @@
-# Paste Go ![alt text](icon.png)
+# Paste Go ![alt text](extension/icon.png)
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/cointem.paste-go) ![Installs](https://img.shields.io/visual-studio-marketplace/i/cointem.paste-go) ![License](https://img.shields.io/github/license/cointem/paste-go)
 
@@ -97,39 +97,7 @@ To enable AI superpowers using your own API Key (e.g. DeepSeek):
 - `pasteGo.aiBaseUrl` 仅在 `openai` 兼容接口时需要（如 DeepSeek）。
 - `pasteGo.aiModel` 为空时会使用默认模型。
 
-### Cross-platform Binaries / 跨平台二进制
 
-This extension uses a bundled binary under `extension/bin`. For macOS/Linux you need to provide the matching binary name:
-插件使用 `extension/bin` 下的二进制文件。macOS/Linux 需要对应文件名：
-
-- Windows: `paste-go.exe`
-- macOS (Intel): `paste-go-darwin-amd64`
-- macOS (Apple Silicon): `paste-go-darwin-arm64`
-- Linux (x64): `paste-go-linux-amd64`
-- Linux (arm64): `paste-go-linux-arm64`
-
-If you want to build them yourself, you can cross-compile from Windows:
-如需自行构建，可在 Windows 上交叉编译：
-
-```powershell
-set GOOS=darwin
-set GOARCH=amd64
-go build -ldflags="-s -w" -o ../extension/bin/paste-go-darwin-amd64 ./cmd/paste-go
-
-set GOOS=darwin
-set GOARCH=arm64
-go build -ldflags="-s -w" -o ../extension/bin/paste-go-darwin-arm64 ./cmd/paste-go
-
-set GOOS=linux
-set GOARCH=amd64
-go build -ldflags="-s -w" -o ../extension/bin/paste-go-linux-amd64 ./cmd/paste-go
-
-set GOOS=linux
-set GOARCH=arm64
-go build -ldflags="-s -w" -o ../extension/bin/paste-go-linux-arm64 ./cmd/paste-go
-```
-
----
 
 ## 🤝 Contributing / 贡献
 
