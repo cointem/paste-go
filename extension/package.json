@@ -17,7 +17,9 @@
   ],
   "keywords": ["paste", "go", "smart paste", "ai", "code generation"],
   "icon": "icon.png",
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:paste-go.smartPaste"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
