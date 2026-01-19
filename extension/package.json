@@ -3,7 +3,7 @@
   "displayName": "Paste Go",
   "publisher": "cointem",
   "description": "Smart paste for VS Code: convert JSON/SQL/code or text into typed structures with local parsing + AI fallback.",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",

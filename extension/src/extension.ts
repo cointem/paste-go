@@ -3,30 +3,51 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
 
-function resolveBundledBinary(extPath: string): string {
+function resolveBinaryName(): string {
     const platform = process.platform;
     const arch = process.arch;
 
     if (platform === 'win32') {
-        return path.join(extPath, 'bin', 'paste-go.exe');
+        return 'paste-go.exe';
     }
 
     if (platform === 'darwin') {
-        if (arch === 'arm64') {
-            return path.join(extPath, 'bin', 'paste-go-darwin-arm64');
-        }
-        return path.join(extPath, 'bin', 'paste-go-darwin-amd64');
+        return arch === 'arm64' ? 'paste-go-darwin-arm64' : 'paste-go-darwin-amd64';
     }
 
     if (platform === 'linux') {
-        if (arch === 'arm64') {
-            return path.join(extPath, 'bin', 'paste-go-linux-arm64');
-        }
-        return path.join(extPath, 'bin', 'paste-go-linux-amd64');
+        return arch === 'arm64' ? 'paste-go-linux-arm64' : 'paste-go-linux-amd64';
     }
 
-    return path.join(extPath, 'bin', 'paste-go');
+    return 'paste-go';
 }
+
+function findBundledBinary(context: vscode.ExtensionContext): string | null {
+    const binName = resolveBinaryName();
+
+    const candidates = [
+        path.join(context.extensionPath, 'bin', binName)
+    ];
+
+    const installed = vscode.extensions.getExtension('cointem.paste-go');
+    if (installed && installed.extensionPath && installed.extensionPath !== context.extensionPath) {
+        candidates.push(path.join(installed.extensionPath, 'bin', binName));
+    }
+
+    // also try legacy locations just in case
+    candidates.push(path.join(context.extensionPath, '..', 'extension', 'bin', binName));
+    candidates.push(path.join(context.extensionPath, '..', '..', 'extension', 'bin', binName));
+
+    for (const c of candidates) {
+        try {
+            if (fs.existsSync(c)) return c;
+        } catch (e) {
+            // ignore permission errors and continue
+        }
+    }
+    return null;
+}
+
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Paste Go is now active!');
@@ -49,58 +70,40 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        // 2. Resolve Binary Path
-        const config = vscode.workspace.getConfiguration('pasteGo');
-        const extPath = context.extensionPath;
-        let binPath = resolveBundledBinary(extPath);
+           const config = vscode.workspace.getConfiguration('pasteGo');
         const aiKey = config.get<string>('aiApiKey');
         const aiApiFormat = config.get<string>('aiApiFormat') || "gemini";
         const aiModel = config.get<string>('aiModel') || "";
         const aiBaseUrl = config.get<string>('aiBaseUrl') || "";
 
+        // Resolve binary strictly from bundled/installed extension
+        const binPath = findBundledBinary(context);
+        outputChannel.appendLine(`Core Path: ${binPath ?? '(not found)'}`);
 
-        // 3. Prepare Arguments
-        // We detect the language of the current file to pass as target
-        const languageId = editor.document.languageId; 
+        if (!binPath) {
+            outputChannel.appendLine('Error: paste-go binary not found in extension bin folder.');
+            outputChannel.appendLine('Checked in extensionPath and installed extension locations.');
+            outputChannel.show(true);
+            vscode.window.showErrorMessage('Paste Go core binary not found. Reinstall the extension or set a valid path in settings.');
+            return;
+        }
+
+        // Prepare args
+        const languageId = editor.document.languageId;
         const args = ['-lang', languageId];
-        if (aiKey) {
-            args.push('-key', aiKey);
-        }
-        if (aiApiFormat) {
-            args.push('-format', aiApiFormat);
-        }
-        if (aiModel) {
-            args.push('-model', aiModel);
-        }
-        if (aiBaseUrl) {
-            args.push('-baseurl', aiBaseUrl);
-        }
+        if (aiKey) args.push('-key', aiKey);
+        if (aiApiFormat) args.push('-format', aiApiFormat);
+        if (aiModel) args.push('-model', aiModel);
+        if (aiBaseUrl) args.push('-baseurl', aiBaseUrl);
 
-        // 4. Execute Core
-        // Quick dev hack: if binPath doesn't exist, try running with 'go run' from workspace if available
-        // But for a robust extension, we should valid binary. 
-        // For THIS DEMO session, to make it work immediately without compiling binary:
-        let proc: cp.ChildProcess;
-        
-        // CHECK IF DEV MODE: If we are in the dev workspace, we can use `go run`
-        outputChannel.appendLine(`Core Path: ${binPath}`);
-        
-        if (binPath.includes('paste-go') && !fs.existsSync(binPath)) {
-             // Fallback to go run for development convenience
-             outputChannel.appendLine("Binary not found, falling back to 'go run'...");
-             const coreDir = path.join(context.extensionPath, '..', 'core');
-             proc = cp.spawn('go', ['run', './cmd/paste-go/main.go', ...args], {
-                 cwd: coreDir,
-                 env: process.env // Inherit env for GOPATH etc
-             });
-        } else {
-             proc = cp.spawn(binPath, args);
-        }
-        
         outputChannel.appendLine(`Spawning with args: ${args.join(' ')}`);
+
+
 
         let output = '';
         let errorOutput = '';
+
+        const proc = cp.spawn(binPath, args);
 
         if (proc.stdin) {
             try {
