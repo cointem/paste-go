@@ -33,7 +33,7 @@ Example: copy the JSON below, then paste into `types.go` to generate a Go struct
 
 ### Method 1: GUI Settings
 
-Open **File > Preferences > Settings** → search `Paste Go` → fill in your provider and key.
+Open **File > Preferences > Settings** → search `Paste Go` → select the API format and enter your key.
 
 ### Method 2: `settings.json`
 
@@ -59,7 +59,6 @@ Open **File > Preferences > Settings** → search `Paste Go` → fill in your pr
 - `pasteGo.aiApiKey` — API key for AI fallback.
 - `pasteGo.aiBaseUrl` — Base URL for OpenAI-format services (not needed for Gemini).
 - `pasteGo.aiModel` — Specific model name (leave empty for default).
-- `pasteGo.corePath` — Custom `paste-go` binary path; if empty, uses the bundled binary.
 
 ## Privacy & Data
 

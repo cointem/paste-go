@@ -51,16 +51,13 @@ export function activate(context: vscode.ExtensionContext) {
 
         // 2. Resolve Binary Path
         const config = vscode.workspace.getConfiguration('pasteGo');
-        let binPath = config.get<string>('corePath');
+        const extPath = context.extensionPath;
+        let binPath = resolveBundledBinary(extPath);
         const aiKey = config.get<string>('aiApiKey');
         const aiApiFormat = config.get<string>('aiApiFormat') || "gemini";
         const aiModel = config.get<string>('aiModel') || "";
         const aiBaseUrl = config.get<string>('aiBaseUrl') || "";
 
-        if (!binPath) {
-            const extPath = context.extensionPath;
-            binPath = resolveBundledBinary(extPath);
-        }
 
         // 3. Prepare Arguments
         // We detect the language of the current file to pass as target
