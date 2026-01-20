@@ -28,6 +28,23 @@ function resolveBundledBinary(extPath: string): string {
     return path.join(extPath, 'bin', 'paste-go');
 }
 
+function ensureExecutable(filePath: string, outputChannel: vscode.OutputChannel) {
+    if (process.platform === 'win32') {
+        return;
+    }
+
+    try {
+        const stat = fs.statSync(filePath);
+        const isExecutable = (stat.mode & 0o111) !== 0;
+        if (!isExecutable) {
+            fs.chmodSync(filePath, 0o755);
+            outputChannel.appendLine(`chmod +x applied: ${filePath}`);
+        }
+    } catch (error) {
+        outputChannel.appendLine(`chmod check failed: ${error}`);
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
     console.log('Paste Go is now active!');
     const outputChannel = vscode.window.createOutputChannel("Paste Go");
@@ -77,26 +94,15 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // 4. Execute Core
-        // Quick dev hack: if binPath doesn't exist, try running with 'go run' from workspace if available
-        // But for a robust extension, we should valid binary. 
-        // For THIS DEMO session, to make it work immediately without compiling binary:
-        let proc: cp.ChildProcess;
-        
-        // CHECK IF DEV MODE: If we are in the dev workspace, we can use `go run`
         outputChannel.appendLine(`Core Path: ${binPath}`);
-        
-        if (binPath.includes('paste-go') && !fs.existsSync(binPath)) {
-             // Fallback to go run for development convenience
-             outputChannel.appendLine("Binary not found, falling back to 'go run'...");
-             const coreDir = path.join(context.extensionPath, '..', 'core');
-             proc = cp.spawn('go', ['run', './cmd/paste-go/main.go', ...args], {
-                 cwd: coreDir,
-                 env: process.env // Inherit env for GOPATH etc
-             });
-        } else {
-             proc = cp.spawn(binPath, args);
+        if (!fs.existsSync(binPath)) {
+            outputChannel.show(true);
+            vscode.window.showErrorMessage('Paste Go binary not found. Please reinstall the extension.');
+            return;
         }
-        
+
+        ensureExecutable(binPath, outputChannel);
+        const proc: cp.ChildProcess = cp.spawn(binPath, args);
         outputChannel.appendLine(`Spawning with args: ${args.join(' ')}`);
 
         let output = '';
