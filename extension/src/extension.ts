@@ -129,8 +129,32 @@ export function activate(context: vscode.ExtensionContext) {
         proc.on('close', (code) => {
             outputChannel.appendLine(`Process exited with code: ${code}`);
             if (code !== 0) {
-                outputChannel.show(true); // Show output channel on error
-                vscode.window.showErrorMessage(`Paste Forge failed. Check Output channel for details.`);
+                const trimmedError = errorOutput.trim();
+                const lastErrorLine = trimmedError.split('\n').slice(-1)[0] || 'Unknown error';
+                const hintParts: string[] = [];
+
+                if (/permission denied/i.test(trimmedError)) {
+                    hintParts.push('Binary lacks execute permission. Try reinstalling or run chmod +x on the bundled binary.');
+                }
+                if (/401|unauthorized/i.test(trimmedError)) {
+                    hintParts.push('Unauthorized. Check pasteGo.aiApiKey.');
+                }
+                if (/403|forbidden/i.test(trimmedError)) {
+                    hintParts.push('Forbidden. Check API key permissions or IP restrictions.');
+                }
+                if (/429|rate limit/i.test(trimmedError)) {
+                    hintParts.push('Rate limited. Wait and retry, or switch provider.');
+                }
+                if (/timeout|timed out|context deadline exceeded/i.test(trimmedError)) {
+                    hintParts.push('Network timeout. Check proxy or pasteGo.aiBaseUrl.');
+                }
+                if (/no such file or directory/i.test(trimmedError)) {
+                    hintParts.push('Binary not found. Reinstall the extension.');
+                }
+
+                const hintText = hintParts.length > 0 ? `\nHint: ${hintParts.join(' ')}` : '';
+                outputChannel.show(true);
+                vscode.window.showErrorMessage(`Paste Go failed (code ${code}). ${lastErrorLine}${hintText}`);
                 return;
             }
 
